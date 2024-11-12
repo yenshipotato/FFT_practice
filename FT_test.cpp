@@ -167,11 +167,8 @@ void FFT(Complex* a,int len){
     return;
 }
 
-void FFTIT(Complex* a,int len){
-	
-    int *pos=new int [len];
-    
-    for(int i=0;i<len;i++){
+void init(Complex* a,int len){
+	for(int i=0;i<len;i++){
     	pos[i]=bin(i);
     	pos[i]=posPosi(pos[i],len);
 	}
@@ -179,6 +176,14 @@ void FFTIT(Complex* a,int len){
 	for(int i=0;i<len;i++)
         if(i<pos[i])
             swap(a[i],a[pos[i]]);
+	return;
+}
+
+void FFTIT(Complex* a,int len){
+	
+    int *pos=new int [len];
+    
+    init(a,len);
             
     
     for(int i=2,mid=1;i<=len;i<<=1,mid<<=1){
@@ -200,14 +205,8 @@ void IFFT(Complex* a,int len){
 	
     int *pos=new int [len];
     
-    for(int i=0;i<len;i++){
-    	pos[i]=bin(i);
-    	pos[i]=posPosi(pos[i],len);
-	}
-	cout<<endl;
-	for(int i=0;i<len;i++)
-        if(i<pos[i])
-            swap(a[i],a[pos[i]]);
+    init(a,len);
+	
     for(int i=2,mid=1;i<=len;i<<=1,mid<<=1){
         Complex wm(cos(2.0*Pi/i),sin(2.0*Pi/i));
         for(int j=0;j<len;j+=i){
